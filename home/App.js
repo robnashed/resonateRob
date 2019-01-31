@@ -9,8 +9,26 @@ export default class App extends React.Component {
 
 {/*********************************** SCROLLVIEW 1 *********************************************/}
 
+      <View style={styles.map}>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 65 }}>
+          <Text style={{color: "white",  marginLeft: 10, fontSize: 28, fontWeight: "bold", paddingRight: 120}}>Philadelphia</Text>
+          <Image source={require('./assets/moodPicker.png')} style={{}}/>
+        </View>
+      </View>
+
+
+
+      <View style={{width: "100%", height: 60, position: "fixed", backgroundColor: "#312F2F", marginTop: 60, borderTopLeftRadius: 40, borderTopRightRadius: 50, alignItems: "center"}}>
+      <Image style={{marginTop: 15}}
+          source={require('./assets/down-arrow.png')}
+          
+        />
+      </View>
+      <ScrollView style={styles.mainWrapper}>
+      
+        
         <View contentContainerstyle={styles.titleWrapper}>
-        <Text style={{color: "white", marginLeft: 10, fontSize: 20}}>Top Charts in Philadelphia</Text>
+        <Text style={{color: "white", marginLeft: 30, fontSize: 20}}>Top Charts</Text>
         </View>
         
 
@@ -166,7 +184,7 @@ export default class App extends React.Component {
         {/*********************************** SCROLLVIEW 2 *********************************************/}
 
         <View contentContainerstyle={styles.titleWrapper}>
-        <Text style={{color: "white", marginLeft: 10, fontSize: 20}}>Recommended</Text>
+        <Text style={{color: "white", marginLeft: 30, fontSize: 20}}>Recommended</Text>
         </View>
         
 
@@ -318,6 +336,7 @@ export default class App extends React.Component {
           </View>
 
         </ScrollView>
+        </ScrollView>
       </View>
     );
   }
@@ -328,18 +347,32 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 60,
     flexDirection: 'column',
-    
+    position: "relative",
     
     // alignItems: 'center',
     justifyContent: 'flex-start',
-   
+
+    
+  },
+  map: {
+    backgroundColor: "#938fad",
+    position: "absolute",
+    zIndex: -100,
+    width: "100%",
+    height: 600
+  },
+  mainWrapper: {
+    flex: 1,
+    // marginTop: 50,
+    zIndex: 100,
     backgroundColor: "#312F2F"
   },
   playlistRow: {
     flex: 1,
     flexDirection: "row",
-    height: 450,
-    paddingTop: 20
+    height: 400,
+    paddingTop: 20,
+    paddingLeft: 30
 
   },
   card: {
@@ -371,11 +404,13 @@ const styles = StyleSheet.create({
   },
   songTitle: {
     color: 'white',
-    fontSize: 15
+    fontSize: 15,
+    paddingBottom: 2
     
   },
   artistName: {
     color: "#E3E3E3",
-    fontSize: 13
+    fontSize: 13,
+    paddingBottom: 9
   }
 });
