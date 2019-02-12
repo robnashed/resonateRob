@@ -1,29 +1,84 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, Image, TouchableHighlight, Modal, Dimensions, Animated } from 'react-native';
+
+import { ColorWheel } from 'react-native-color-wheel';
+
+
+
+
 
 export default class App extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isOpen: false,
+      topY: new Animated.value(60)
+    }
+  }
+
+  onPress = () => {
+    if (this.state.isOpen) {
+      Animated.spring(this.state.topY, {
+        to: 60,
+        friction: 5
+      })
+    } else {
+      Animated.spring(this.state.topY, {
+        to: 500,
+        friction: 5
+      })
+    }
+
+    this.setState({isOpen: !this.state.isOpen})
+  }
+
+
+
+
+
   render() {
+
+    const paddingStyle = {
+      paddingTop: this.state.topY
+    }
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, paddingStyle]}>
+    
 
 
-{/*********************************** SCROLLVIEW 1 *********************************************/}
-
+{/*********************************** MAP *********************************************/}
       <View style={styles.map}>
         <View style={{flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 65 }}>
           <Text style={{color: "white",  marginLeft: 10, fontSize: 28, fontWeight: "bold", paddingRight: 120}}>Philadelphia</Text>
-          <Image source={require('./assets/moodPicker.png')} style={{}}/>
+
+                <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(true);
+                }}>
+                <Image source={require('./assets/moodPicker.png')} style={{}}/>
+
+                </TouchableHighlight>
         </View>
       </View>
 
 
+      
+{/*********************************** DOWN ARROW *********************************************/}
+      <View style={{width: "100%", height: 60, position: "fixed", backgroundColor: "#312F2F", marginTop: 60, borderTopLeftRadius: 14, borderTopRightRadius: 14, alignItems: "center"}}>
 
-      <View style={{width: "100%", height: 60, position: "fixed", backgroundColor: "#312F2F", marginTop: 60, borderTopLeftRadius: 40, borderTopRightRadius: 50, alignItems: "center"}}>
-      <Image style={{marginTop: 15}}
-          source={require('./assets/down-arrow.png')}
-          
-        />
+      
+      <TouchableOpacity onPress={this.onPress}>
+          <Image style={{marginTop: 15}}
+            source={require('./assets/down-arrow.png')}
+            
+          />
+        </TouchableOpacity>
+
+      
       </View>
+
+      {/*********************************** SCROLLVIEW 1 *********************************************/}
       <ScrollView style={styles.mainWrapper}>
       
         
@@ -337,7 +392,62 @@ export default class App extends React.Component {
 
         </ScrollView>
         </ScrollView>
-      </View>
+       
+
+        <Modal
+    
+          animationType="slide"
+          transparent={true}
+          
+          visible={this.state.modalVisible}
+          
+          >
+        <View style={styles.moodPicker}> 
+          <View style={{width: "100%", height: 100, flex: .3, alignItems: "flex-end", }}>
+          
+                <TouchableHighlight
+                  onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                  }}
+                  style={{padding: 10,
+                  }}
+                  >
+                          <Image
+                              source={require('./assets/close-button.png')}
+                              style={{
+                    
+                                marginRight: 20,
+                                marginTop: 65,
+                                
+                                }}
+                              
+                            />
+              </TouchableHighlight>
+
+          </View>
+           <View style={{flex: 2, height: 300, }}>
+             
+           <ColorWheel
+      initialColor="#ffffff"
+      onColorChange={color => console.log({color})}
+      onColorChangeComplete={color => onChange(color)}
+      style={{
+        width: Dimensions.get('window').width,
+        
+        maxHeight: 400
+    }}
+      thumbStyle={{ height: 30, width: 30, borderRadius: 30}}
+    />
+
+             </View>   
+
+        </View>
+       
+          </Modal>
+
+      </Animated.View> 
+      
+     
     );
   }
 }
@@ -345,7 +455,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+   // paddingTop: 60,
     flexDirection: 'column',
     position: "relative",
     
@@ -412,5 +522,16 @@ const styles = StyleSheet.create({
     color: "#E3E3E3",
     fontSize: 13,
     paddingBottom: 9
+  },
+  moodPicker: {
+    backgroundColor: "#312F2F",
+    height: 1000,
+    opacity: .95,
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start"
+    
+
   }
+  
 });
